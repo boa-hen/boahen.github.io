@@ -2,7 +2,7 @@
 
 **Lessons 14 to 15 plus independent practice · MySQL 8.0 · Parks and Recreation database**
 
-> **Overview:** So far my SQL ran only when I pressed *Run*. This stage is about **automation inside the database**: saving a query so it can be re-used (a *stored procedure*), making the database react automatically when data changes (a *trigger*), and making it do things on a timer (an *event*). I also learned the hard way how dangerous automation can be, and how a **binary log** can undo an accident.
+> **Overview:** So far my SQL ran only when I pressed *Run*. This stage is about **automation inside the database**; saving a query so it can be re-used (a *stored procedure*), making the database react automatically when data changes (a *trigger*), and making it do things on a timer (an *event*). I also learned the hard way how dangerous automation can be and how a **binary log** can help undo an accident.
 
 | | |
 |---|---|
@@ -164,7 +164,7 @@ VALUES (5, 'Jerry', 'Gergich', 61, 'Male', '1962-08-28');
 ```
 
 > [!CAUTION]
-> **A gotcha I found while validating.** The lesson-15 event `delete_retirees` is never dropped in the scripts. I re-inserted Jerry in a test server with the event still active, and **it deleted him again within 30 seconds**. Recovery only sticks if you first run:
+> **A reminder I found while validating.** Due to the lesson-15 event `delete_retirees` not being dropped in the scripts, when I re-inserted Jerry in a test server **it deleted him again within 30 seconds**. Recovery only sticks if the event is deactivated else it just gets deletd again.
 > ```sql
 > DROP EVENT IF EXISTS delete_retirees;
 > ```
@@ -179,7 +179,7 @@ VALUES (5, 'Jerry', 'Gergich', 61, 'Male', '1962-08-28');
 | Script | Statements | Result |
 |---|---|---|
 | Lesson 14 | 15 | all ran, 0 errors |
-| Lesson 15 | 7 | all ran, 0 errors; trigger fired; event deleted Jerry within 30 s |
+| Lesson 15 | 7 | all ran, 0 errors; trigger fired; event deleted Jerry within 30 seconds |
 | Rough sheet | 23 | 22 ran; 1 expected failure: `SHOW BINLOG EVENTS` on a log file name that exists only on my Windows PC (error 1220 in the test server) |
 
 Full method and results: [`docs/validation-report.md`](../docs/validation-report.md).
